@@ -36,7 +36,7 @@ namespace CRMEDU.Service.Services
         public async Task<Admin> CreateAsync(AdminForCreationDTO adminForCreationDTO)
         {
             if (!adminForCreationDTO.Basics.Security.Password.IsValidPassword())
-                throw new Exception("Password should contain at least 8 chars" +
+                throw new Exception(message: "Password should contain at least 8 chars" +
                     " at least one letter " +
                     "and at list one number");
 
@@ -44,7 +44,7 @@ namespace CRMEDU.Service.Services
             if (!adminForCreationDTO.Connection.Email.IsValidEmail())
                 throw new Exception("Email can contain only numbers, letters, '.' and should end with @gmail.com");
 
-            if (StringExtentions.IsNoMoreThenMaxSize(
+            if (!StringExtentions.IsNoMoreThenMaxSize(
                 30, new string[]
                 {
                     adminForCreationDTO.Basics.LastName,
@@ -61,8 +61,14 @@ namespace CRMEDU.Service.Services
 
             admin = await adminRepository.CreateAsync(mapper.Map<Admin>(adminForCreationDTO));
 
-            await adminRepository.SaveAsync();
-
+            try
+            {
+                await adminRepository.SaveAsync();
+            }
+            catch
+            {
+                throw new Exception("Username, Email, or such already exists");
+            }
             return admin;
         }
 

@@ -8,7 +8,7 @@ namespace CRMEDU.Service.Extensions
     {
         public static bool IsValidPassword(this string pasword)
         {
-            Regex regex = new Regex(@"^(.{8,50}|[^0-9]*|[^A-Z])$");
+            Regex regex = new Regex(@"^(.{8,}|[^0-9]*|[^A-Z])$");
             Match match = regex.Match(pasword);
             return match.Success;
         }

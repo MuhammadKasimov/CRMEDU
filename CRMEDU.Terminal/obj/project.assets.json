@@ -1375,9 +1375,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Terminal\\CRMEDU.Terminal.csproj",
-      "projectName": "CRMEDU.Terminal",
-      "projectPath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Terminal\\CRMEDU.Terminal.csproj",
+      "projectUniqueName": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Terminal\\CRMEDU.Console.csproj",
+      "projectName": "CRMEDU.Console",
+      "projectPath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Terminal\\CRMEDU.Console.csproj",
       "packagesPath": "C:\\Users\\muham\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Terminal\\obj\\",
       "projectStyle": "PackageReference",

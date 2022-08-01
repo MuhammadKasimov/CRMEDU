@@ -11,5 +11,6 @@ namespace CRMEDU.Domain.Commons
         public string Email { get; set; }
         public string Address { get; set; }
         public string TgUserName { get; set; }
+
     }
 }

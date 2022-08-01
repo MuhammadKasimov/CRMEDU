@@ -7,7 +7,7 @@ namespace CRMEDU.Domain.Commons
         public long Id { get; set; }
         public string Login { get; set; }
 
-        [StringLength(50, MinimumLength = 8)]
+        [MaxLength(50)]
         public string Password { get; set; }
     }
 }

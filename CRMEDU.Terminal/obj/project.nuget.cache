@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uy+PvgJtBlnaQlIdZWbNzg28ObM0ju1u5M61I9Aq4ID/IP4HBc/MCGWMay2CyfHnazg5ZMeeQkjCwRvaoe6CAg==",
+  "dgSpecHash": "aXYj6RbcUQuegbvSNQqviJFzvwOFDcvPMORorYCN9KwuaVVp9XHll4pSYaPRlXsWmnUmPn0yFicuILMOVEeUeg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Terminal\\CRMEDU.Terminal.csproj",
+  "projectFilePath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Terminal\\CRMEDU.Console.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\muham\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
