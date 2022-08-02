@@ -44,16 +44,12 @@ namespace CRMEDU.Service.Services
         public IEnumerable<Reporter> GetAll(Expression<Func<Reporter, bool>> expression = null, Tuple<int, int> pagination = null)
         {
             var reporters = reporterRepository.GetAll(expression);
-            if (pagination == null)
-                return reporters.Take(10);
-            return reporters.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
+            return pagination == null ? reporters.Take(10) : (IEnumerable<Reporter>)reporters.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
         }
         public async Task<Reporter> GetAsync(Expression<Func<Reporter, bool>> expression)
         {
             reporter = await reporterRepository.GetAsync(expression);
-            if (reporter == null)
-                throw new Exception("Reporter not found");
-            return reporter;
+            return reporter ?? throw new Exception("Reporter not found");
         }
 
         public async Task<Reporter> UpdateAsync(long id, ReporterForCreationDTO reporterForCreationDTO)

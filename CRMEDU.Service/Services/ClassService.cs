@@ -46,17 +46,13 @@ namespace CRMEDU.Service.Services
         public IEnumerable<Class> GetAllAsync(Expression<Func<Class, bool>> expression = null, Tuple<int, int> pagination = null)
         {
             var classes = classRepository.GetAll(expression);
-            if (pagination == null)
-                return classes.Take(10);
-            return classes.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
+            return pagination == null ? classes.Take(10) : (IEnumerable<Class>)classes.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
         }
 
         public async Task<Class> GetAsync(Expression<Func<Class, bool>> expression)
         {
             clas = await classRepository.GetAsync(expression);
-            if (clas == null)
-                throw new Exception("Class not found");
-            return clas;
+            return clas ?? throw new Exception("Class not found");
         }
 
         public async Task<Class> UpdateAsync(long id, ClassForCreationDTO classForCreationDTO)

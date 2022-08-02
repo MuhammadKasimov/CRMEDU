@@ -45,23 +45,19 @@ namespace CRMEDU.Service.Services
         public IQueryable<Comment> GetAllAsync(Expression<Func<Comment, bool>> expression = null, Tuple<int, int> pagination = null)
         {
             var comments = commentRepository.GetAll(expression);
-            if (pagination == null)
-                return comments.Take(10);
-            return comments.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
+            return pagination == null ? comments.Take(10) : comments.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
         }
 
         public async Task<Comment> GetAsync(Expression<Func<Comment, bool>> expression)
         {
             comment = await commentRepository.GetAsync(expression);
-            if (comment == null)
-                throw new Exception("Comment not found");
-            return comment;
-
+            return comment ?? throw new Exception("Comment not found");
         }
 
         public async Task<Comment> UpdateAsync(long id, CommentForCreationDTO commentForCreationDTO)
         {
             comment = await GetAsync(c => c.Id == id);
+
             comment = commentRepository.Update(mapper.Map(commentForCreationDTO, comment));
             await commentRepository.SaveAsync();
             return comment;

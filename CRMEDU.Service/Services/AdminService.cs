@@ -84,11 +84,9 @@ namespace CRMEDU.Service.Services
         {
             var admins = adminRepository.GetAll(expression);
 
-            if (pagination == null)
-                return admins.Take(10);
-
-            else
-                return admins.Skip((pagination.Item1 - 1) * pagination.Item2)
+            return pagination == null
+                ? admins.Take(10)
+                : (IEnumerable<Admin>)admins.Skip((pagination.Item1 - 1) * pagination.Item2)
                       .Take(pagination.Item2);
         }
 
@@ -96,10 +94,7 @@ namespace CRMEDU.Service.Services
         {
             admin = await adminRepository.GetAsync(expression);
 
-            if (admin == null)
-                throw new Exception("Admin not found");
-
-            return admin;
+            return admin ?? throw new Exception("Admin not found");
         }
 
         public async Task<Admin> UpdateAsync(long id, AdminForCreationDTO adminForCreationDTO)

@@ -68,22 +68,16 @@ namespace CRMEDU.Service.Services
         public IEnumerable<Teacher> GetAllAsync(Expression<Func<Teacher, bool>> expression = null, Tuple<int, int> pagination = null)
         {
             var admins = teacherRepository.GetAll(expression);
-            if (pagination == null)
-
-                return mapper.Map<IEnumerable<Teacher>>(admins.Take(10));
-            else
-                return mapper.Map<IEnumerable<Teacher>>
-                      (admins.Skip((pagination.Item1 - 1) * pagination.Item2)
-                      .Take(pagination.Item2));
+            return pagination == null
+                ? admins.Take(10)
+                : (IEnumerable<Teacher>)admins.Skip((pagination.Item1 - 1) * pagination.Item2)
+                                              .Take(pagination.Item2);
         }
 
         public async Task<Teacher> GetAsync(Expression<Func<Teacher, bool>> expression)
         {
             teacher = await teacherRepository.GetAsync(expression);
-            if (teacher == null)
-                throw new Exception("Teacher not found");
-            return teacher;
-
+            return teacher ?? throw new Exception("Teacher not found");
         }
 
         public async Task<Teacher> UpdateAsync(long id, TeacherForCreationDTO teacherForCreationDTO)

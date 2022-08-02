@@ -56,29 +56,24 @@ namespace CRMEDU.Service.Services
         public async Task DeleteAsync(Expression<Func<Student, bool>> expression)
         {
             if (!await studentRepository.DeleteAsync(expression))
-            {
                 throw new Exception("User not found");
-            }
+
             await studentRepository.SaveAsync();
         }
 
         public IEnumerable<Student> GetAllAsync(Expression<Func<Student, bool>> expression = null, Tuple<int, int> pagination = null)
         {
             var admins = studentRepository.GetAll(expression);
-            if (pagination == null)
-
-                return admins.Take(10);
-            else
-                return admins.Skip((pagination.Item1 - 1) * pagination.Item2)
+            return pagination == null
+                ? admins.Take(10)
+                : (IEnumerable<Student>)admins.Skip((pagination.Item1 - 1) * pagination.Item2)
                       .Take(pagination.Item2);
         }
 
         public async Task<Student> GetAsync(Expression<Func<Student, bool>> expression)
         {
             student = await studentRepository.GetAsync(expression);
-            if (student == null)
-                throw new Exception("Student not found");
-            return student;
+            return student ?? throw new Exception("Student not found");
         }
 
         public async Task<Student> UpdateAsync(long id, StudentForCreationDTO adminForCreationDTO)

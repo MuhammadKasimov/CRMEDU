@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -16,25 +17,13 @@ namespace CRMEDU.Service.Extensions
         {
             var isNotValidChars = @"!__#__$__%__^__&__*__(__)__=__-__+__?__/__,__>__<__|__\__`__~__ ".Split("__");
 
-            foreach (var i in isNotValidChars)
-            {
-                if (email.Contains(i))
-                    return false;
-            }
-            if (email.Contains("@gmail.com"))
-                return true;
-            return false;
+            return !isNotValidChars.Any(email.Contains) && email.Contains("@gmail.com");
         }
         public static bool IsNoMoreThenMaxSize(int maxSize, params string[] values)
-        {
-            foreach (string s in values)
-                if (s.Length > maxSize)
-                    return false;
-            return true;
-        }
+            => values.All(v => v.Length <= maxSize);
+
         public static string GetHashPasword(this string password)
         {
-            // Hash the password 
             var hash = new System.Security.Cryptography.SHA256Managed();
             var bytes = Encoding.UTF8.GetBytes(password);
             var hashByte = hash.ComputeHash(bytes);

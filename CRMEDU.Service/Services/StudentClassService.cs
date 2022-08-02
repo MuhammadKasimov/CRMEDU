@@ -43,17 +43,15 @@ namespace CRMEDU.Service.Services
         public IEnumerable<StudentClass> GetAllAsync(Expression<Func<StudentClass, bool>> expression = null, Tuple<int, int> pagination = null)
         {
             var studentClasses = studentClassRepository.GetAll(expression);
-            if (pagination == null)
-                return studentClasses.Take(10);
-            return studentClasses.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
+            return pagination == null
+                ? studentClasses.Take(10)
+                : (IEnumerable<StudentClass>)studentClasses.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
         }
 
         public async Task<StudentClass> GetAsync(Expression<Func<StudentClass, bool>> expression)
         {
             studentClass = await studentClassRepository.GetAsync(expression);
-            if (studentClass == null)
-                throw new Exception("relation between this class and student is empty");
-            return studentClass;
+            return studentClass ?? throw new Exception("relation between this class and student is empty");
         }
 
         public async Task<StudentClass> UpdateAsync(long id, StudentClassForCreationDTO studentClassForCreationDTO)
