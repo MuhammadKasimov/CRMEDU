@@ -16,9 +16,6 @@ namespace CRMEDU.Domain.Entities.Teachers
         public long ConnectionId { get; set; }
         public Connection Connection { get; set; }
 
-        public long CourseId { get; set; }
-        public Course Course { get; set; }
-
         public long SentCommentsId { get; set; }
         public Comment SentComments { get; set; }
     }
