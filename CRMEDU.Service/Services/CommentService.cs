@@ -17,7 +17,7 @@ namespace CRMEDU.Service.Services
         private readonly ICommentRepository commentRepository;
         private readonly IMapper mapper;
         private Comment comment;
-        CommentService()
+        public CommentService()
         {
             commentRepository = new CommentRepository();
             mapper = new MapperConfiguration(

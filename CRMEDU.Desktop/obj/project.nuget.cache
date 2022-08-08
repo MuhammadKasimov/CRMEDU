@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Qf9bGfZa4bDNpv6zcS/VaydoNabVQiBS7fObXJuiaUjuWOFeHYNXB5e8p2TSCE8/eWzq8ESv4yVS1m3SJxWErw==",
+  "dgSpecHash": "FmlkBiddYQlb6SBabcMB+9ZjJ5gXphnhe/ifcc81/dXXeY6OiicBRRESndSAKz2Mmpfw2BYKNFDIAClKZQOqLQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Desktop\\CRMEDU.Desktop.csproj",
+  "projectFilePath": "c:\\Users\\muham\\CRMEDU\\CRMEDU.Desktop\\CRMEDU.Desktop.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\muham\\.nuget\\packages\\materialdesigncolors\\2.0.6\\materialdesigncolors.2.0.6.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\materialdesignthemes\\4.5.0\\materialdesignthemes.4.5.0.nupkg.sha512"

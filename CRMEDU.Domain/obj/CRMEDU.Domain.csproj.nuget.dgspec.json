@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\CRMEDU.Domain.csproj": {}
+    "c:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\CRMEDU.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\CRMEDU.Domain.csproj": {
+    "c:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\CRMEDU.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\CRMEDU.Domain.csproj",
+        "projectUniqueName": "c:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\CRMEDU.Domain.csproj",
         "projectName": "CRMEDU.Domain",
-        "projectPath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\CRMEDU.Domain.csproj",
+        "projectPath": "c:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\CRMEDU.Domain.csproj",
         "packagesPath": "C:\\Users\\muham\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\obj\\",
+        "outputPath": "c:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

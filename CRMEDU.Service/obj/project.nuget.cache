@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "IO9A6d/vRitCdl8sZzaM+edfewXcMIga023aWDrOHXNr+X2B+V3QaLxd+G2vWhM2k28XDRWxLSC04kAGk7unZQ==",
+  "dgSpecHash": "E9eeYrS5iuEYKkKYcl4/VShfBZU2C3uQw1KCdXrw05OhTq2Q5mWUggEs8usoB/p1PI7pXpLJTQjK67LHfBCVXw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Service\\CRMEDU.Service.csproj",
+  "projectFilePath": "c:\\Users\\muham\\CRMEDU\\CRMEDU.Service\\CRMEDU.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\muham\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
