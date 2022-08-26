@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "Y2pnnt6kfAJc8gUgl2e0jTE/s1beX2pEClvDPl6i/fQ=",
+  "Source": "CRMEDU.Api",
+  "BasePath": "_content/CRMEDU.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

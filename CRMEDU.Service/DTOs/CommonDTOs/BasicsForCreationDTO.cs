@@ -15,6 +15,6 @@ namespace CRMEDU.Service.DTOs.CommonDTOs
         public Gender Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public virtual ICollection<CommentForCreationDTO> SentComments { get; set; }
+        public virtual IEnumerable<CommentForCreationDTO> SentComments { get; set; }
     }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "b/OLN45AAYo3KgfmLiW4Qe4kRBtFXxIMQAYY1j7/JvukIns3NTWE6KMxqj3Hqh3esj/QXpYGG0rq1evPkXl/wA==",
+  "dgSpecHash": "xSAPOxVkfOfWQIcO7Z/H/cjrOfY1WOV2Um8n9jRa5cLAXkE4uidLJu6I9JTJaZAAUs5QBHkNamKD0eJutS9Now==",
   "success": true,
-  "projectFilePath": "c:\\Users\\muham\\CRMEDU\\CRMEDU.Data\\CRMEDU.Data.csproj",
+  "projectFilePath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Data\\CRMEDU.Data.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\muham\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

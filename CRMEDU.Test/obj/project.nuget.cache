@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "t13a/SazpzTxgNzu/zcAg1VePEh41IwxPvfNZFrG2gvGe3QoIIhDzMxiGaz5X9d8p5EUC3eQZYJWm1MNdHWOCQ==",
+  "dgSpecHash": "wuTZn38gbpjig0wgYgu2p/zXcdfJhAbfFStYEuSQPLK/E9JISACy6jv2KHEgCov7+2G/QyrYGQhvEPGo12L+VA==",
   "success": true,
-  "projectFilePath": "c:\\Users\\muham\\CRMEDU\\CRMEDU.Test\\CRMEDU.Test.csproj",
+  "projectFilePath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Test\\CRMEDU.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\muham\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
@@ -28,6 +28,7 @@
     "C:\\Users\\muham\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\muham\\.nuget\\packages\\sharprompt\\2.4.3\\sharprompt.2.4.3.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\system.data.sqlclient\\4.8.3\\system.data.sqlclient.4.8.3.nupkg.sha512",
