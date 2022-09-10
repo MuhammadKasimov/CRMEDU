@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using CRMEDU.Data.IRepositories;
+﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Courses;
 using CRMEDU.Service.DTOs.CoursesDTOs;
 using CRMEDU.Service.Interfaces;
+using Mapster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,6 @@ namespace CRMEDU.Service.Services
     public class ClassService : IClassService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
         private Class clas;
 
         public ClassService(IUnitOfWork unitOfWork)
@@ -25,7 +24,7 @@ namespace CRMEDU.Service.Services
         {
             if (classForCreationDTO.ClassName.Length < 65)
                 throw new Exception("Name of class should be no more then 65 characters");
-            clas = await unitOfWork.ClassRepository.CreateAsync(mapper.Map<Class>(classForCreationDTO));
+            clas = await unitOfWork.ClassRepository.CreateAsync(classForCreationDTO.Adapt<Class>());
             await unitOfWork.SaveAsync();
             return clas;
         }
@@ -53,7 +52,7 @@ namespace CRMEDU.Service.Services
         {
             clas = await GetAsync(c => c.Id == id);
 
-            clas = unitOfWork.ClassRepository.Update(mapper.Map(classForCreationDTO, clas));
+            clas = unitOfWork.ClassRepository.Update(classForCreationDTO.Adapt(clas));
             await unitOfWork.SaveAsync();
             return clas;
         }

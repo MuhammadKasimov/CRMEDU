@@ -1,5 +1,4 @@
 ﻿using CRMEDU.Service.Interfaces;
-using CRMEDU.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRMEDU.Api.Controllers
@@ -10,9 +9,9 @@ namespace CRMEDU.Api.Controllers
     {
         private readonly IAdminService adminService;
 
-        public AdminsController()
+        public AdminsController(IAdminService adminService)
         {
-            adminService = new AdminService();
+            this.adminService = adminService;
         }
 
 

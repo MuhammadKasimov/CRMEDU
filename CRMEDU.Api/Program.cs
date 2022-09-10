@@ -1,3 +1,10 @@
+
+using CRMEDU.Data.Context;
+using CRMEDU.Data.IRepositories;
+using CRMEDU.Data.Repositories;
+using CRMEDU.Service.Interfaces;
+using CRMEDU.Service.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +13,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<IUnitOfWork, UnitOfWork>();
+builder.Services.AddSingleton<IAdminService, AdminService>();
+builder.Services.AddSingleton<CRMEDUDBContext, CRMEDUDBContext>();
 
 var app = builder.Build();
 

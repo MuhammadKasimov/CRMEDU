@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "+FKipQI22oacx0+s+T+82kcmHyrOoeyIGt6W38+zi5bBq5a3qu3DFxwZ5YOA6q35yufTOwl8aW3WvqI6bBvpyA==",
+  "dgSpecHash": "eL8AVce8tsAboAVRP6YkTCwHn411ALJZJehxXmHnidu8fKd/73wvyFrahfgK5rCSKo6SPj/d/HTIMrAVmThDIQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Domain\\CRMEDU.Domain.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\muham\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.7\\microsoft.netcore.app.ref.6.0.7.nupkg.sha512",
+    "C:\\Users\\muham\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.7\\microsoft.windowsdesktop.app.ref.6.0.7.nupkg.sha512",
+    "C:\\Users\\muham\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.7\\microsoft.aspnetcore.app.ref.6.0.7.nupkg.sha512"
+  ],
   "logs": []
 }

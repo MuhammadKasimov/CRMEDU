@@ -19,8 +19,7 @@ namespace CRMEDU.Service.Services
 
         public AdminService(IUnitOfWork unitOfWork)
         {
-            admin = new Admin();
-            Console.WriteLine("AdminService");
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task<Admin> CreateAsync(AdminForCreationDTO adminForCreationDTO)

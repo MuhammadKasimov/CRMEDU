@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "yWtqJPHn0xZax/h3G7+TG4qUZDEsqxodBcveNZwJeKXFUPc/k8ma3p1vmQsyEvsRP0PrrXzWZhGLfSSkje2s7A==",
+  "dgSpecHash": "wLxCu3MGA9fkcfljaovqCdZXnBaFVNW1KM2i2Qtlwsns/OndoBKw9wB/jqJs/6Xx9/cIR1apFsaL9l9BrB4awg==",
   "success": true,
   "projectFilePath": "C:\\Users\\muham\\CRMEDU\\CRMEDU.Api\\CRMEDU.Api.csproj",
   "expectedPackageFiles": [
@@ -50,7 +50,11 @@
     "C:\\Users\\muham\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\muham\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
-    "C:\\Users\\muham\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512"
+    "C:\\Users\\muham\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
+    "C:\\Users\\muham\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.7\\microsoft.netcore.app.ref.6.0.7.nupkg.sha512",
+    "C:\\Users\\muham\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.7\\microsoft.windowsdesktop.app.ref.6.0.7.nupkg.sha512",
+    "C:\\Users\\muham\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.7\\microsoft.aspnetcore.app.ref.6.0.7.nupkg.sha512",
+    "C:\\Users\\muham\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.7\\microsoft.netcore.app.host.win-x64.6.0.7.nupkg.sha512"
   ],
   "logs": []
 }

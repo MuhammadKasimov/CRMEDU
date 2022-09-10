@@ -16,7 +16,7 @@ namespace CRMEDU.Service.Services
         private readonly IUnitOfWork unitOfWork;
         private Lesson lesson;
 
-        public LessonService(IUnitOfWork)
+        public LessonService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
