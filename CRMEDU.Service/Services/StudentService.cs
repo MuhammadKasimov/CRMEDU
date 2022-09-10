@@ -1,10 +1,9 @@
-﻿using AutoMapper;
-using CRMEDU.Data.IRepositories;
+﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Students;
 using CRMEDU.Service.DTOs.StudentsDTOs;
 using CRMEDU.Service.Extensions;
 using CRMEDU.Service.Interfaces;
-using CRMEDU.Service.Maper;
+using Mapster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +16,9 @@ namespace CRMEDU.Service.Services
     {
         private readonly IUnitOfWork unitOfWork;
         Student student;
-        public StudentService()
+        public StudentService(IUnitOfWork unitOfWork)
         {
-            studentRepository = new StudentRepository();
-            mapper = new MapperConfiguration
-                (cfg =>
-                {
-                    cfg.AddProfile<MapingProfile>();
-                }).CreateMapper();
+            this.unitOfWork = unitOfWork;
         }
         public async Task<Student> CreateAsync(StudentForCreationDTO studentForCreationDTO)
         {
@@ -45,22 +39,22 @@ namespace CRMEDU.Service.Services
             }))
                 throw new Exception("Name, FirstName, FathesName, UserName can contain only 30 chars");
 
-            student = await studentRepository.CreateAsync(mapper.Map<Student>(studentForCreationDTO));
-            await studentRepository.SaveAsync();
+            student = await unitOfWork.StudentRepository.CreateAsync(studentForCreationDTO.Adapt<Student>());
+            await unitOfWork.SaveAsync();
             return student;
         }
 
         public async Task DeleteAsync(Expression<Func<Student, bool>> expression)
         {
-            if (!await studentRepository.DeleteAsync(expression))
+            if (!await unitOfWork.StudentRepository.DeleteAsync(expression))
                 throw new Exception("User not found");
 
-            await studentRepository.SaveAsync();
+            await unitOfWork.SaveAsync();
         }
 
         public IEnumerable<Student> GetAllAsync(Expression<Func<Student, bool>> expression = null, Tuple<int, int> pagination = null)
         {
-            var admins = studentRepository.GetAll(expression);
+            var admins = unitOfWork.StudentRepository.GetAll(expression);
             return pagination == null
                 ? admins.Take(10)
                 : (IEnumerable<Student>)admins.Skip((pagination.Item1 - 1) * pagination.Item2)
@@ -69,16 +63,16 @@ namespace CRMEDU.Service.Services
 
         public async Task<Student> GetAsync(Expression<Func<Student, bool>> expression)
         {
-            student = await studentRepository.GetAsync(expression);
+            student = await unitOfWork.StudentRepository.GetAsync(expression);
             return student ?? throw new Exception("Student not found");
         }
 
-        public async Task<Student> UpdateAsync(long id, StudentForCreationDTO adminForCreationDTO)
+        public async Task<Student> UpdateAsync(long id, StudentForCreationDTO studentForCreationDTO)
         {
             student = await GetAsync(s => s.Id == id);
 
-            student = studentRepository.Update(mapper.Map(adminForCreationDTO, student));
-            await studentRepository.SaveAsync();
+            student = unitOfWork.StudentRepository.Update(studentForCreationDTO.Adapt(student));
+            await unitOfWork.SaveAsync();
             return student;
         }
     }

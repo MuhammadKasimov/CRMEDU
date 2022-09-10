@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using CRMEDU.Data.IRepositories;
-using CRMEDU.Data.Repositories;
+﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Teachers;
 using CRMEDU.Service.DTOs.TeachersDTOs;
 using CRMEDU.Service.Extensions;
 using CRMEDU.Service.Interfaces;
-using CRMEDU.Service.Maper;
+using Mapster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,18 +14,11 @@ namespace CRMEDU.Service.Services
 {
     public class TeacherService : ITeacherService
     {
-        private readonly ITeacherRepository teacherRepository;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
         Teacher teacher;
-        public TeacherService()
+        public TeacherService(IUnitOfWork unitOfWork)
         {
-            teacher = new Teacher();
-            teacherRepository = new TeacherRepository();
-            mapper = new MapperConfiguration
-                (cfg =>
-                {
-                    cfg.AddProfile<MapingProfile>();
-                }).CreateMapper();
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task<Teacher> CreateAsync(TeacherForCreationDTO teacherForCreationDTO)
@@ -51,23 +42,23 @@ namespace CRMEDU.Service.Services
 
             teacherForCreationDTO.Basics.Security.Password.GetHashPasword();
 
-            teacher = await teacherRepository.CreateAsync(mapper.Map<Teacher>(teacherForCreationDTO));
-            await teacherRepository.SaveAsync();
+            teacher = await unitOfWork.TeacherRepository.CreateAsync(teacherForCreationDTO.Adapt<Teacher>());
+            await unitOfWork.SaveAsync();
             return teacher;
         }
 
         public async Task DeleteAsync(Expression<Func<Teacher, bool>> expression)
         {
-            if (!await teacherRepository.DeleteAsync(expression))
+            if (!await unitOfWork.TeacherRepository.DeleteAsync(expression))
             {
                 throw new Exception("Teacher not found");
             }
-            await teacherRepository.SaveAsync();
+            await unitOfWork.SaveAsync();
         }
 
         public IEnumerable<Teacher> GetAllAsync(Expression<Func<Teacher, bool>> expression = null, Tuple<int, int> pagination = null)
         {
-            var admins = teacherRepository.GetAll(expression);
+            var admins = unitOfWork.TeacherRepository.GetAll(expression);
             return pagination == null
                 ? admins.Take(10)
                 : (IEnumerable<Teacher>)admins.Skip((pagination.Item1 - 1) * pagination.Item2)
@@ -76,15 +67,15 @@ namespace CRMEDU.Service.Services
 
         public async Task<Teacher> GetAsync(Expression<Func<Teacher, bool>> expression)
         {
-            teacher = await teacherRepository.GetAsync(expression);
+            teacher = await unitOfWork.TeacherRepository.GetAsync(expression);
             return teacher ?? throw new Exception("Teacher not found");
         }
 
         public async Task<Teacher> UpdateAsync(long id, TeacherForCreationDTO teacherForCreationDTO)
         {
             teacher = await GetAsync(t => t.Id == id);
-            teacher = teacherRepository.Update(mapper.Map(teacherForCreationDTO, teacher));
-            await teacherRepository.SaveAsync();
+            teacher = unitOfWork.TeacherRepository.Update(teacherForCreationDTO.Adapt(teacher));
+            await unitOfWork.SaveAsync();
             return teacher;
         }
     }
