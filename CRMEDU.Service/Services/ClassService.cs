@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using CRMEDU.Data.IRepositories;
-using CRMEDU.Data.Repositories;
 using CRMEDU.Domain.Entities.Courses;
 using CRMEDU.Service.DTOs.CoursesDTOs;
 using CRMEDU.Service.Interfaces;
-using CRMEDU.Service.Maper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,43 +13,39 @@ namespace CRMEDU.Service.Services
 {
     public class ClassService : IClassService
     {
-        private readonly IClassRepository classRepository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private Class clas;
 
-        public ClassService()
+        public ClassService(IUnitOfWork unitOfWork)
         {
-            classRepository = new ClassRepository();
-            mapper = new MapperConfiguration(
-                cfg => cfg.AddProfile<MapingProfile>())
-                .CreateMapper();
-            clas = new Class();
+            this.unitOfWork = unitOfWork;
         }
         public async Task<Class> CreateAsync(ClassForCreationDTO classForCreationDTO)
         {
             if (classForCreationDTO.ClassName.Length < 65)
-                throw new Exception("Name of class should no more then 65 characters");
-            clas = await classRepository.CreateAsync(mapper.Map<Class>(classForCreationDTO));
-            await classRepository.SaveAsync();
+                throw new Exception("Name of class should be no more then 65 characters");
+            clas = await unitOfWork.ClassRepository.CreateAsync(mapper.Map<Class>(classForCreationDTO));
+            await unitOfWork.SaveAsync();
             return clas;
         }
 
         public async Task DeleteAsync(Expression<Func<Class, bool>> expression)
         {
-            if (await classRepository.DeleteAsync(expression))
+            if (await unitOfWork.ClassRepository.DeleteAsync(expression))
                 throw new Exception("Class not found");
-            await classRepository.SaveAsync();
+            await unitOfWork.SaveAsync();
         }
 
         public IEnumerable<Class> GetAllAsync(Expression<Func<Class, bool>> expression = null, Tuple<int, int> pagination = null)
         {
-            var classes = classRepository.GetAll(expression);
+            var classes = unitOfWork.ClassRepository.GetAll(expression);
             return pagination == null ? classes.Take(10) : (IEnumerable<Class>)classes.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
         }
 
         public async Task<Class> GetAsync(Expression<Func<Class, bool>> expression)
         {
-            clas = await classRepository.GetAsync(expression);
+            clas = await unitOfWork.ClassRepository.GetAsync(expression);
             return clas ?? throw new Exception("Class not found");
         }
 
@@ -59,8 +53,8 @@ namespace CRMEDU.Service.Services
         {
             clas = await GetAsync(c => c.Id == id);
 
-            clas = classRepository.Update(mapper.Map(classForCreationDTO, clas));
-            await classRepository.SaveAsync();
+            clas = unitOfWork.ClassRepository.Update(mapper.Map(classForCreationDTO, clas));
+            await unitOfWork.SaveAsync();
             return clas;
         }
     }

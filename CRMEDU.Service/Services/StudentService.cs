@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CRMEDU.Data.IRepositories;
-using CRMEDU.Data.Repositories;
 using CRMEDU.Domain.Entities.Students;
 using CRMEDU.Service.DTOs.StudentsDTOs;
 using CRMEDU.Service.Extensions;
@@ -16,12 +15,10 @@ namespace CRMEDU.Service.Services
 {
     public class StudentService : IStudentService
     {
-        private readonly IStudentRepository studentRepository;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
         Student student;
         public StudentService()
         {
-            student = new Student();
             studentRepository = new StudentRepository();
             mapper = new MapperConfiguration
                 (cfg =>

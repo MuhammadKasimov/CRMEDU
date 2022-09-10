@@ -12,6 +12,5 @@ namespace CRMEDU.Data.IRepositories
         Task<T> GetAsync(Expression<Func<T, bool>> expression);
         IQueryable<T> GetAll(Expression<Func<T, bool>> expression = null);
         Task<T> CreateAsync(T entity);
-        Task SaveAsync();
     }
 }

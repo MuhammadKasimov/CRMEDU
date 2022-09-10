@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using CRMEDU.Data.IRepositories;
-using CRMEDU.Data.Repositories;
+﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.ManyRelations;
 using CRMEDU.Service.DTOs.ManyRelationsDTOs;
 using CRMEDU.Service.Interfaces;
-using CRMEDU.Service.Maper;
+using Mapster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,35 +13,30 @@ namespace CRMEDU.Service.Services
 {
     public class ClassReporterService : IClassReporterService
     {
-        private readonly IClassReporterRepository classReporterRepository;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
         private ClassReporter classReporter;
 
-        public ClassReporterService()
+        public ClassReporterService(IUnitOfWork unitOfWork)
         {
-            classReporterRepository = new ClassReporterRepository();
-            mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MapingProfile>();
-            }).CreateMapper();
+            this.unitOfWork = unitOfWork;
         }
 
-        public async Task<ClassReporter> CreateAsync(ClassReporterForCreationDTO ClassReporterForCreationDTO)
+        public async Task<ClassReporter> CreateAsync(ClassReporterForCreationDTO classReporterForCreationDTO)
         {
-            classReporter = await classReporterRepository.CreateAsync(mapper.Map<ClassReporter>(ClassReporterForCreationDTO));
+            classReporter = await unitOfWork.ClassReporterRepository.CreateAsync(classReporterForCreationDTO.Adapt<ClassReporter>());
             return classReporter;
         }
 
         public async Task DeleteAsync(Expression<Func<ClassReporter, bool>> expression)
         {
-            if (!await classReporterRepository.DeleteAsync(expression))
+            if (!await unitOfWork.ClassReporterRepository.DeleteAsync(expression))
                 throw new Exception("ClassReporter not found");
-            await classReporterRepository.SaveAsync();
+            await unitOfWork.SaveAsync();
         }
 
         public IEnumerable<ClassReporter> GetAll(Expression<Func<ClassReporter, bool>> expression = null, Tuple<int, int> pagination = null)
         {
-            var reporters = classReporterRepository.GetAll(expression);
+            var reporters = unitOfWork.ClassReporterRepository.GetAll(expression);
             return pagination == null ? reporters.Take(10) :
                 (IEnumerable<ClassReporter>)reporters
                 .Skip((pagination.Item1 - 1) * pagination.Item2)
@@ -51,16 +44,16 @@ namespace CRMEDU.Service.Services
         }
         public async Task<ClassReporter> GetAsync(Expression<Func<ClassReporter, bool>> expression)
         {
-            classReporter = await classReporterRepository.GetAsync(expression);
+            classReporter = await unitOfWork.ClassReporterRepository.GetAsync(expression);
             return classReporter ?? throw new Exception("Reporter not found");
         }
 
-        public async Task<ClassReporter> UpdateAsync(long id, ClassReporterForCreationDTO reporterForCreationDTO)
+        public async Task<ClassReporter> UpdateAsync(long id, ClassReporterForCreationDTO classReporterForCreationDTO)
         {
             classReporter = await GetAsync(r => r.Id == id);
 
-            classReporter = classReporterRepository.Update(
-                mapper.Map(reporterForCreationDTO, classReporter));
+            classReporter = unitOfWork.ClassReporterRepository.Update(
+                classReporterForCreationDTO.Adapt(classReporter));
             return classReporter;
         }
     }

@@ -13,9 +13,9 @@ namespace CRMEDU.Data.Repositories
         public CRMEDUDBContext dbContext;
         protected readonly DbSet<T> dbSet;
 
-        public GenericRepository()
+        public GenericRepository(CRMEDUDBContext dbContext)
         {
-            dbContext = new CRMEDUDBContext();
+            this.dbContext = dbContext;
             dbSet = dbContext.Set<T>();
         }
 
@@ -45,8 +45,5 @@ namespace CRMEDU.Data.Repositories
             dbSet.Remove(entity);
             return true;
         }
-
-        public async Task SaveAsync() =>
-            await dbContext.SaveChangesAsync();
     }
 }

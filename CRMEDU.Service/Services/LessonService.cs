@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using CRMEDU.Data.Repositories;
+﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Lessons;
 using CRMEDU.Service.DTOs.LessonsDTOs;
 using CRMEDU.Service.Interfaces;
-using CRMEDU.Service.Maper;
+using Mapster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,45 +13,39 @@ namespace CRMEDU.Service.Services
 {
     public class LessonService : ILessonService
     {
-        private readonly LessonRepository lessonRepository;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
         private Lesson lesson;
 
-        public LessonService()
+        public LessonService(IUnitOfWork)
         {
-            lessonRepository = new LessonRepository();
-            mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MapingProfile>();
-            }).CreateMapper();
-            lesson = new Lesson();
+            this.unitOfWork = unitOfWork;
         }
         public async Task<Lesson> CreateAsync(LessonForCreationDTO lessonForCreationDTO)
         {
             if (lessonForCreationDTO.Title.Length > 80)
                 throw new ArgumentException("Title cannot be longer than 80 characters");
 
-            lesson = await lessonRepository.CreateAsync(mapper.Map<Lesson>(lessonForCreationDTO));
-            await lessonRepository.SaveAsync();
+            lesson = await unitOfWork.LessonRepository.CreateAsync(lessonForCreationDTO.Adapt<Lesson>());
+            await unitOfWork.SaveAsync();
             return lesson;
         }
 
         public async Task DeleteAsync(Expression<Func<Lesson, bool>> expression)
         {
-            if (await lessonRepository.DeleteAsync(expression))
+            if (await unitOfWork.LessonRepository.DeleteAsync(expression))
                 throw new ArgumentException("Lesson not found");
-            await lessonRepository.SaveAsync();
+            await unitOfWork.SaveAsync();
         }
 
         public IEnumerable<Lesson> GetAll(Expression<Func<Lesson, bool>> expression = null, Tuple<int, int> pagination = null)
         {
-            var lessons = lessonRepository.GetAll(expression);
+            var lessons = unitOfWork.LessonRepository.GetAll(expression);
             return pagination == null ? lessons.Take(10) : (IEnumerable<Lesson>)lessons.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
         }
 
         public async Task<Lesson> GetAsync(Expression<Func<Lesson, bool>> expression)
         {
-            lesson = await lessonRepository.GetAsync(expression);
+            lesson = await unitOfWork.LessonRepository.GetAsync(expression);
             return lesson ?? throw new ArgumentException("Lesson not found");
         }
 
@@ -60,8 +53,8 @@ namespace CRMEDU.Service.Services
         {
             lesson = await GetAsync(l => l.Id == id);
 
-            lesson = lessonRepository.Update(mapper.Map(lessonForCreationDTO, lesson));
-            await lessonRepository.SaveAsync();
+            lesson = unitOfWork.LessonRepository.Update(lessonForCreationDTO.Adapt(lesson));
+            await unitOfWork.SaveAsync();
             return lesson;
         }
     }

@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using CRMEDU.Data.IRepositories;
-using CRMEDU.Data.Repositories;
+﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Reporters;
 using CRMEDU.Service.DTOs.ReportersDTOs;
 using CRMEDU.Service.Interfaces;
-using CRMEDU.Service.Maper;
+using Mapster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,40 +13,38 @@ namespace CRMEDU.Service.Services
 {
     public class ReporterService : IReporterService
     {
-        private readonly IReporterRepository reporterRepository;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
         private Reporter reporter;
 
-        public ReporterService()
+        public ReporterService(IUnitOfWork unitOfWork)
         {
-            reporterRepository = new ReporterRepository();
-            mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MapingProfile>();
-            }).CreateMapper();
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task<Reporter> CreateAsync(ReporterForCreationDTO reporterForCreationDTO)
         {
-            reporter = await reporterRepository.CreateAsync(mapper.Map<Reporter>(reporterForCreationDTO));
+            reporter = await unitOfWork.ReporterRepository.CreateAsync(reporterForCreationDTO.Adapt<Reporter>());
             return reporter;
         }
 
         public async Task DeleteAsync(Expression<Func<Reporter, bool>> expression)
         {
-            if (!await reporterRepository.DeleteAsync(expression))
+            if (!await unitOfWork.ReporterRepository.DeleteAsync(expression))
                 throw new Exception("Reporter not found");
-            await reporterRepository.SaveAsync();
+            await unitOfWork.SaveAsync();
         }
 
         public IEnumerable<Reporter> GetAll(Expression<Func<Reporter, bool>> expression = null, Tuple<int, int> pagination = null)
         {
-            var reporters = reporterRepository.GetAll(expression);
-            return pagination == null ? reporters.Take(10) : (IEnumerable<Reporter>)reporters.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
+            var reporters = unitOfWork.ReporterRepository.GetAll(expression);
+            return pagination == null ? reporters.Take(10)
+                : (IEnumerable<Reporter>)reporters
+                .Skip((pagination.Item1 - 1) * pagination.Item2)
+                .Take(pagination.Item2);
         }
         public async Task<Reporter> GetAsync(Expression<Func<Reporter, bool>> expression)
         {
-            reporter = await reporterRepository.GetAsync(expression);
+            reporter = await unitOfWork.ReporterRepository.GetAsync(expression);
             return reporter ?? throw new Exception("Reporter not found");
         }
 
@@ -56,8 +52,8 @@ namespace CRMEDU.Service.Services
         {
             reporter = await GetAsync(r => r.Id == id);
 
-            reporter = reporterRepository.Update(
-                mapper.Map(reporterForCreationDTO, reporter));
+            reporter = unitOfWork.ReporterRepository.Update(
+                reporterForCreationDTO.Adapt(reporter));
             return reporter;
         }
     }

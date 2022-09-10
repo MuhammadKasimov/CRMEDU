@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using CRMEDU.Data.IRepositories;
-using CRMEDU.Data.Repositories;
+﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Courses;
 using CRMEDU.Service.DTOs.CoursesDTOs;
 using CRMEDU.Service.Interfaces;
-using CRMEDU.Service.Maper;
+using Mapster;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -16,17 +14,11 @@ namespace CRMEDU.Service.Services
 {
     public class CourseService : ICourseService
     {
-        private readonly ICourseRepository courseRepository;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
         private Course course;
-        public CourseService()
+        public CourseService(IUnitOfWork unitOfWork)
         {
-            courseRepository = new CourseRepository();
-            mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MapingProfile>();
-            }).CreateMapper();
-            course = new Course();
+            this.unitOfWork = unitOfWork;
         }
         public async Task<Course> CreateAsync(CourseForCreationDTO courseForCreationDTO)
         {
@@ -34,32 +26,32 @@ namespace CRMEDU.Service.Services
                 throw new Exception("Title length can't be more then 65 characters");
             try
             {
-                course = await courseRepository.CreateAsync(mapper.Map<Course>(courseForCreationDTO));
+                course = await unitOfWork.CourseRepository.CreateAsync(courseForCreationDTO.Adapt<Course>());
             }
             catch (SqlException)
             {
                 throw new Exception("Course Already Exists");
             }
-            await courseRepository.SaveAsync();
+            await unitOfWork.SaveAsync();
             return course;
         }
 
         public async Task DeleteAsync(Expression<Func<Course, bool>> expression)
         {
-            if (!await courseRepository.DeleteAsync(expression))
+            if (!await unitOfWork.CourseRepository.DeleteAsync(expression))
                 throw new Exception("Course Not Found");
-            await courseRepository.SaveAsync();
+            await unitOfWork.SaveAsync();
         }
 
         public IEnumerable<Course> GetAll(Expression<Func<Course, bool>> expression = null, Tuple<int, int> pagination = null)
         {
-            var courses = courseRepository.GetAll(expression);
+            var courses = unitOfWork.CourseRepository.GetAll(expression);
             return pagination == null ? courses.Take(10) : (IEnumerable<Course>)courses.Skip((pagination.Item1 - 1) * pagination.Item2).Take(pagination.Item2);
         }
 
         public async Task<Course> GetAsync(Expression<Func<Course, bool>> expression)
         {
-            course = await courseRepository.GetAsync(expression);
+            course = await unitOfWork.CourseRepository.GetAsync(expression);
             return course ?? throw new Exception("Course Not Found");
         }
 
@@ -67,8 +59,8 @@ namespace CRMEDU.Service.Services
         {
             course = await GetAsync(c => c.Id == id);
 
-            courseRepository.Update(mapper.Map(courseForCreationDTO, course));
-            await courseRepository.SaveAsync();
+            unitOfWork.CourseRepository.Update(courseForCreationDTO.Adapt(course));
+            await unitOfWork.SaveAsync();
             return course;
         }
     }

@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using CRMEDU.Data.IRepositories;
-using CRMEDU.Data.Repositories;
+﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Admins;
 using CRMEDU.Service.DTOs.AdminsDTOs;
 using CRMEDU.Service.Extensions;
 using CRMEDU.Service.Interfaces;
-using CRMEDU.Service.Maper;
+using Mapster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +14,13 @@ namespace CRMEDU.Service.Services
 {
     public class AdminService : IAdminService
     {
-        private readonly IAdminRepository adminRepository;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
         private Admin admin;
 
-        public AdminService()
+        public AdminService(IUnitOfWork unitOfWork)
         {
             admin = new Admin();
-
-            adminRepository = new AdminRepository();
-
-            mapper = new MapperConfiguration
-                (cfg =>
-                {
-                    cfg.AddProfile<MapingProfile>();
-                }).CreateMapper();
+            Console.WriteLine("AdminService");
         }
 
         public async Task<Admin> CreateAsync(AdminForCreationDTO adminForCreationDTO)
@@ -59,11 +49,11 @@ namespace CRMEDU.Service.Services
 
 
 
-            admin = await adminRepository.CreateAsync(mapper.Map<Admin>(adminForCreationDTO));
+            admin = await unitOfWork.AdminRepository.CreateAsync(adminForCreationDTO.Adapt<Admin>());
 
             try
             {
-                await adminRepository.SaveAsync();
+                await unitOfWork.SaveAsync();
             }
             catch
             {
@@ -74,15 +64,15 @@ namespace CRMEDU.Service.Services
 
         public async Task DeleteAsync(Expression<Func<Admin, bool>> expression)
         {
-            if (!await adminRepository.DeleteAsync(expression))
+            if (!await unitOfWork.AdminRepository.DeleteAsync(expression))
                 throw new Exception("Admin not found");
 
-            await adminRepository.SaveAsync();
+            await unitOfWork.SaveAsync();
         }
 
         public IEnumerable<Admin> GetAll(Expression<Func<Admin, bool>> expression = null, Tuple<int, int> pagination = null)
         {
-            var admins = adminRepository.GetAll(expression);
+            var admins = unitOfWork.AdminRepository.GetAll(expression);
 
             return pagination == null
                 ? admins.Take(10)
@@ -92,7 +82,7 @@ namespace CRMEDU.Service.Services
 
         public async Task<Admin> GetAsync(Expression<Func<Admin, bool>> expression)
         {
-            admin = await adminRepository.GetAsync(expression);
+            admin = await unitOfWork.AdminRepository.GetAsync(expression);
 
             return admin ?? throw new Exception("Admin not found");
         }
@@ -101,8 +91,8 @@ namespace CRMEDU.Service.Services
         {
             admin = await GetAsync(a => a.Id == id);
 
-            admin = adminRepository.Update(mapper.Map(adminForCreationDTO, admin));
-            await adminRepository.SaveAsync();
+            admin = unitOfWork.AdminRepository.Update(adminForCreationDTO.Adapt(admin));
+            await unitOfWork.SaveAsync();
             return admin;
         }
     }
