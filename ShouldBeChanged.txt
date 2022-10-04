@@ -1,9 +1,0 @@
-Basics
-username unique
-
-
-Course
-title unique
-
-teacher - course (one to many)
-validation

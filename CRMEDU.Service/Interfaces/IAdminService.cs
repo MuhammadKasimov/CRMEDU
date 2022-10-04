@@ -14,5 +14,6 @@ namespace CRMEDU.Service.Interfaces
         Task DeleteAsync(Expression<Func<Admin, bool>> expression);
         Task<Admin> GetAsync(Expression<Func<Admin, bool>> expression);
         IEnumerable<Admin> GetAll(Expression<Func<Admin, bool>> expression = null, Tuple<int, int> pagination = null);
+        Task<string> GenerateTokenAsync(string login, string password);
     }
 }

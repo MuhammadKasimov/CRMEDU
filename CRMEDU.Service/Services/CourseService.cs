@@ -1,6 +1,7 @@
 ﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Courses;
 using CRMEDU.Service.DTOs.CoursesDTOs;
+using CRMEDU.Service.Exceptions;
 using CRMEDU.Service.Interfaces;
 using Mapster;
 using System;
@@ -23,14 +24,14 @@ namespace CRMEDU.Service.Services
         public async Task<Course> CreateAsync(CourseForCreationDTO courseForCreationDTO)
         {
             if (courseForCreationDTO.Title.Length > 65)
-                throw new Exception("Title length can't be more then 65 characters");
+                throw new MyCustomException("Title length can't be more then 65 characters");
             try
             {
                 course = await unitOfWork.CourseRepository.CreateAsync(courseForCreationDTO.Adapt<Course>());
             }
             catch (SqlException)
             {
-                throw new Exception("Course Already Exists");
+                throw new MyCustomException("Course Already Exists");
             }
             await unitOfWork.SaveAsync();
             return course;
@@ -39,7 +40,7 @@ namespace CRMEDU.Service.Services
         public async Task DeleteAsync(Expression<Func<Course, bool>> expression)
         {
             if (!await unitOfWork.CourseRepository.DeleteAsync(expression))
-                throw new Exception("Course Not Found");
+                throw new MyCustomException("Course Not Found");
             await unitOfWork.SaveAsync();
         }
 
@@ -52,7 +53,7 @@ namespace CRMEDU.Service.Services
         public async Task<Course> GetAsync(Expression<Func<Course, bool>> expression)
         {
             course = await unitOfWork.CourseRepository.GetAsync(expression);
-            return course ?? throw new Exception("Course Not Found");
+            return course ?? throw new MyCustomException("Course Not Found");
         }
 
         public async Task<Course> UpdateAsync(long id, Course courseForCreationDTO)

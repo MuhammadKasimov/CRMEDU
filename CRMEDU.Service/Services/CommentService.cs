@@ -1,6 +1,7 @@
 ﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Commons;
 using CRMEDU.Service.DTOs.CommonDTOs;
+using CRMEDU.Service.Exceptions;
 using CRMEDU.Service.Interfaces;
 using Mapster;
 using System;
@@ -22,7 +23,7 @@ namespace CRMEDU.Service.Services
         public async Task<Comment> CreateAsync(CommentForCreationDTO commentForCreationDTO)
         {
             if (commentForCreationDTO.Context.Length < 500)
-                throw new Exception("Context can't more then 500 chracters");
+                throw new MyCustomException("Context can't more then 500 chracters");
             comment = await unitOfWork.CommentRepository.CreateAsync(commentForCreationDTO.Adapt<Comment>());
             await unitOfWork.SaveAsync();
             return comment;
@@ -31,7 +32,7 @@ namespace CRMEDU.Service.Services
         public async Task DeleteAsync(Expression<Func<Comment, bool>> expression)
         {
             if (!await unitOfWork.CommentRepository.DeleteAsync(expression))
-                throw new Exception("Comment not found");
+                throw new MyCustomException("Comment not found");
             await unitOfWork.SaveAsync();
         }
 
@@ -44,7 +45,7 @@ namespace CRMEDU.Service.Services
         public async Task<Comment> GetAsync(Expression<Func<Comment, bool>> expression)
         {
             comment = await unitOfWork.CommentRepository.GetAsync(expression);
-            return comment ?? throw new Exception("Comment not found");
+            return comment ?? throw new MyCustomException("Comment not found");
         }
 
         public async Task<Comment> UpdateAsync(long id, CommentForCreationDTO commentForCreationDTO)

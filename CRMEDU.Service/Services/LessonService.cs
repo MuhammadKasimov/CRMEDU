@@ -1,6 +1,7 @@
 ﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Lessons;
 using CRMEDU.Service.DTOs.LessonsDTOs;
+using CRMEDU.Service.Exceptions;
 using CRMEDU.Service.Interfaces;
 using Mapster;
 using System;
@@ -23,7 +24,7 @@ namespace CRMEDU.Service.Services
         public async Task<Lesson> CreateAsync(LessonForCreationDTO lessonForCreationDTO)
         {
             if (lessonForCreationDTO.Title.Length > 80)
-                throw new ArgumentException("Title cannot be longer than 80 characters");
+                throw new MyCustomException("Title cannot be longer than 80 characters");
 
             lesson = await unitOfWork.LessonRepository.CreateAsync(lessonForCreationDTO.Adapt<Lesson>());
             await unitOfWork.SaveAsync();
@@ -33,7 +34,7 @@ namespace CRMEDU.Service.Services
         public async Task DeleteAsync(Expression<Func<Lesson, bool>> expression)
         {
             if (await unitOfWork.LessonRepository.DeleteAsync(expression))
-                throw new ArgumentException("Lesson not found");
+                throw new MyCustomException("Lesson not found");
             await unitOfWork.SaveAsync();
         }
 
@@ -46,7 +47,7 @@ namespace CRMEDU.Service.Services
         public async Task<Lesson> GetAsync(Expression<Func<Lesson, bool>> expression)
         {
             lesson = await unitOfWork.LessonRepository.GetAsync(expression);
-            return lesson ?? throw new ArgumentException("Lesson not found");
+            return lesson ?? throw new MyCustomException("Lesson not found");
         }
 
         public async Task<Lesson> UpdateAsync(long id, LessonForCreationDTO lessonForCreationDTO)

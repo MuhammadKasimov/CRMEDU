@@ -1,6 +1,7 @@
 ﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Teachers;
 using CRMEDU.Service.DTOs.TeachersDTOs;
+using CRMEDU.Service.Exceptions;
 using CRMEDU.Service.Extensions;
 using CRMEDU.Service.Interfaces;
 using Mapster;
@@ -24,11 +25,11 @@ namespace CRMEDU.Service.Services
         public async Task<Teacher> CreateAsync(TeacherForCreationDTO teacherForCreationDTO)
         {
             if (!teacherForCreationDTO.Basics.Security.Password.IsValidPassword())
-                throw new Exception("Password should contain at least 8 chars and no more then 50" +
+                throw new MyCustomException("Password should contain at least 8 chars and no more then 50" +
                     " at least one letter " +
                     "and at list one number");
             if (!teacherForCreationDTO.Connection.Email.IsValidEmail())
-                throw new Exception("Email can contain only numbers, letters, '.' and should end with @gmail.com");
+                throw new MyCustomException("Email can contain only numbers, letters, '.' and should end with @gmail.com");
 
             if (StringExtentions.IsNoMoreThenMaxSize(
                 30, new string[]
@@ -38,7 +39,7 @@ namespace CRMEDU.Service.Services
                     teacherForCreationDTO.Basics.FathersName,
                     teacherForCreationDTO.Basics.Username
                 }))
-                throw new Exception("Name, FirstName, FathesName, UserName can contain only 30 chars");
+                throw new MyCustomException("Name, FirstName, FathesName, UserName can contain only 30 chars");
 
             teacherForCreationDTO.Basics.Security.Password.GetHashPasword();
 
@@ -51,7 +52,7 @@ namespace CRMEDU.Service.Services
         {
             if (!await unitOfWork.TeacherRepository.DeleteAsync(expression))
             {
-                throw new Exception("Teacher not found");
+                throw new MyCustomException("Teacher not found");
             }
             await unitOfWork.SaveAsync();
         }
@@ -68,7 +69,7 @@ namespace CRMEDU.Service.Services
         public async Task<Teacher> GetAsync(Expression<Func<Teacher, bool>> expression)
         {
             teacher = await unitOfWork.TeacherRepository.GetAsync(expression);
-            return teacher ?? throw new Exception("Teacher not found");
+            return teacher ?? throw new MyCustomException("Teacher not found");
         }
 
         public async Task<Teacher> UpdateAsync(long id, TeacherForCreationDTO teacherForCreationDTO)

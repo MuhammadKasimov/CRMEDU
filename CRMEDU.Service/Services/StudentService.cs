@@ -1,6 +1,7 @@
 ﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Students;
 using CRMEDU.Service.DTOs.StudentsDTOs;
+using CRMEDU.Service.Exceptions;
 using CRMEDU.Service.Extensions;
 using CRMEDU.Service.Interfaces;
 using Mapster;
@@ -23,11 +24,11 @@ namespace CRMEDU.Service.Services
         public async Task<Student> CreateAsync(StudentForCreationDTO studentForCreationDTO)
         {
             if (!studentForCreationDTO.Basics.Security.Password.IsValidPassword())
-                throw new Exception("Password should contain at least 8 chars" +
+                throw new MyCustomException("Password should contain at least 8 chars" +
                     " at least one letter " +
                     "and at list one number");
             if (!studentForCreationDTO.Connection.Email.IsValidEmail())
-                throw new Exception("Email can contain only numbers, letters, '.' and should end with @gmail.com");
+                throw new MyCustomException("Email can contain only numbers, letters, '.' and should end with @gmail.com");
             studentForCreationDTO.Basics.Security.Password.GetHashPasword();
 
             if (StringExtentions.IsNoMoreThenMaxSize(30, new string[]
@@ -37,7 +38,7 @@ namespace CRMEDU.Service.Services
                 studentForCreationDTO.Basics.FathersName,
                 studentForCreationDTO.Basics.Username
             }))
-                throw new Exception("Name, FirstName, FathesName, UserName can contain only 30 chars");
+                throw new MyCustomException("Name, FirstName, FathesName, UserName can contain only 30 chars");
 
             student = await unitOfWork.StudentRepository.CreateAsync(studentForCreationDTO.Adapt<Student>());
             await unitOfWork.SaveAsync();
@@ -47,7 +48,7 @@ namespace CRMEDU.Service.Services
         public async Task DeleteAsync(Expression<Func<Student, bool>> expression)
         {
             if (!await unitOfWork.StudentRepository.DeleteAsync(expression))
-                throw new Exception("User not found");
+                throw new MyCustomException("User not found");
 
             await unitOfWork.SaveAsync();
         }
@@ -64,7 +65,7 @@ namespace CRMEDU.Service.Services
         public async Task<Student> GetAsync(Expression<Func<Student, bool>> expression)
         {
             student = await unitOfWork.StudentRepository.GetAsync(expression);
-            return student ?? throw new Exception("Student not found");
+            return student ?? throw new MyCustomException("Student not found");
         }
 
         public async Task<Student> UpdateAsync(long id, StudentForCreationDTO studentForCreationDTO)

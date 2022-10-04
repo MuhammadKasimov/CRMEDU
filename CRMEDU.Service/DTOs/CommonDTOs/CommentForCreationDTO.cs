@@ -1,10 +1,8 @@
-﻿using CRMEDU.Domain.Enums;
-
-namespace CRMEDU.Service.DTOs.CommonDTOs
+﻿namespace CRMEDU.Service.DTOs.CommonDTOs
 {
     public class CommentForCreationDTO
     {
+        public long? BasicsId { get; set; }
         public string Context { get; set; }
-        public SentTo SentTo { get; set; }
     }
 }

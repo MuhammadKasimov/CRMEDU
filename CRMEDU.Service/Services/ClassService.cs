@@ -1,6 +1,7 @@
 ﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Courses;
 using CRMEDU.Service.DTOs.CoursesDTOs;
+using CRMEDU.Service.Exceptions;
 using CRMEDU.Service.Interfaces;
 using Mapster;
 using System;
@@ -23,7 +24,7 @@ namespace CRMEDU.Service.Services
         public async Task<Class> CreateAsync(ClassForCreationDTO classForCreationDTO)
         {
             if (classForCreationDTO.ClassName.Length < 65)
-                throw new Exception("Name of class should be no more then 65 characters");
+                throw new MyCustomException("Name of class should be no more then 65 characters");
             clas = await unitOfWork.ClassRepository.CreateAsync(classForCreationDTO.Adapt<Class>());
             await unitOfWork.SaveAsync();
             return clas;
@@ -32,7 +33,7 @@ namespace CRMEDU.Service.Services
         public async Task DeleteAsync(Expression<Func<Class, bool>> expression)
         {
             if (await unitOfWork.ClassRepository.DeleteAsync(expression))
-                throw new Exception("Class not found");
+                throw new MyCustomException("Class not found");
             await unitOfWork.SaveAsync();
         }
 
@@ -45,7 +46,7 @@ namespace CRMEDU.Service.Services
         public async Task<Class> GetAsync(Expression<Func<Class, bool>> expression)
         {
             clas = await unitOfWork.ClassRepository.GetAsync(expression);
-            return clas ?? throw new Exception("Class not found");
+            return clas ?? throw new MyCustomException("Class not found");
         }
 
         public async Task<Class> UpdateAsync(long id, ClassForCreationDTO classForCreationDTO)

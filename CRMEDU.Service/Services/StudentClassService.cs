@@ -1,6 +1,7 @@
 ﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.ManyRelations;
 using CRMEDU.Service.DTOs.ManyRelationsDTOs;
+using CRMEDU.Service.Exceptions;
 using CRMEDU.Service.Interfaces;
 using Mapster;
 using System;
@@ -31,7 +32,7 @@ namespace CRMEDU.Service.Services
         public async Task DeleteAsync(Expression<Func<StudentClass, bool>> expression)
         {
             if (!await unitOfWork.StudentClassRepository.DeleteAsync(expression))
-                throw new Exception("relation between this class and student is empty");
+                throw new MyCustomException("relation between this class and student is empty");
             await unitOfWork.SaveAsync();
         }
 
@@ -46,7 +47,7 @@ namespace CRMEDU.Service.Services
         public async Task<StudentClass> GetAsync(Expression<Func<StudentClass, bool>> expression)
         {
             studentClass = await unitOfWork.StudentClassRepository.GetAsync(expression);
-            return studentClass ?? throw new Exception("relation between this class and student is empty");
+            return studentClass ?? throw new MyCustomException("relation between this class and student is empty");
         }
 
         public async Task<StudentClass> UpdateAsync(long id, StudentClassForCreationDTO studentClassForCreationDTO)

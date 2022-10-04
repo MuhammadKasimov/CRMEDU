@@ -1,6 +1,7 @@
 ﻿using CRMEDU.Data.IRepositories;
 using CRMEDU.Domain.Entities.Reporters;
 using CRMEDU.Service.DTOs.ReportersDTOs;
+using CRMEDU.Service.Exceptions;
 using CRMEDU.Service.Interfaces;
 using Mapster;
 using System;
@@ -30,7 +31,7 @@ namespace CRMEDU.Service.Services
         public async Task DeleteAsync(Expression<Func<Reporter, bool>> expression)
         {
             if (!await unitOfWork.ReporterRepository.DeleteAsync(expression))
-                throw new Exception("Reporter not found");
+                throw new MyCustomException("Reporter not found");
             await unitOfWork.SaveAsync();
         }
 
@@ -45,7 +46,7 @@ namespace CRMEDU.Service.Services
         public async Task<Reporter> GetAsync(Expression<Func<Reporter, bool>> expression)
         {
             reporter = await unitOfWork.ReporterRepository.GetAsync(expression);
-            return reporter ?? throw new Exception("Reporter not found");
+            return reporter ?? throw new MyCustomException("Reporter not found");
         }
 
         public async Task<Reporter> UpdateAsync(long id, ReporterForCreationDTO reporterForCreationDTO)

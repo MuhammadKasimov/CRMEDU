@@ -29,7 +29,7 @@ namespace CRMEDU.Data.Repositories
 
 
         public async Task<T> GetAsync(Expression<Func<T, bool>> expression)
-            => await dbSet.FirstOrDefaultAsync(expression);
+            => await dbSet.Include("Basics.Security").FirstOrDefaultAsync(expression);
 
 
         public T Update(T entity)
